@@ -2,7 +2,7 @@
 
 This file reports the aggregated experimental results computed from `pacific_raw_per_run_metrics_github.csv`.
 
-All values are reported as **mean ± standard deviation** over 5 repeated runs. The win, loss, and tie comparison summaries have been removed so that this file can be used directly as a clean GitHub result table.
+All values are reported as **mean ± standard deviation** over 5 repeated runs. 
 
 ## Decimal values
 
