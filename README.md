@@ -1,21 +1,55 @@
-# UC-ACT
+# UCP-Clarify
 
-Reference implementation for UC-ACT. The Python package is named `uc_act`, so
-commands are run with `python -m uc_act...`.
+Reference implementation for UCP-Clarify. The Python package is named
+`ucp_clarify`, so commands are run with `python -m ucp_clarify...`.
 
 This is research code and is not an officially supported product.
 
+## Acknowledgement
+
+This project builds upon **Learning to Clarify (ACT)** by The Google Research
+Authors. The original codebase is available at:
+<https://github.com/google-research/google-research/tree/master/learning_to_clarify>
+
+Our modifications introduce dynamic-beta DPO scheduling, soft preference
+filtering, and evaluation across different dpo variances on top of the original
+ACT framework.
+
+## Citation
+
+If you use this code, please cite both works:
+
+```bibtex
+@inproceedings{
+chen2025learning,
+title={Learning to Clarify: Multi-turn Conversations with Action-Based Contrastive Self-Training},
+author={Maximillian Chen and Ruoxi Sun and Tomas Pfister and Sercan O Arik},
+booktitle={The Thirteenth International Conference on Learning Representations},
+year={2025},
+url={https://openreview.net/forum?id=SIE6VFps9x}
+}
+```
+
+The UCP-Clarify paper is currently **under review**. Citation details will be
+added upon publication.
+
+## License
+
+This project is licensed under the [Apache License 2.0](LICENSE).
+Files originating from the original ACT codebase retain the copyright notice
+of The Google Research Authors. See [NOTICE](NOTICE) for details.
+
 ## Setup Environment
 
-Assume this repository is under `/home/myuser/staging/UC-ACT`.
+Assume this repository is under `/home/myuser/staging/UCP-Clarify`.
 
 ```bash
-cd /home/myuser/staging/UC-ACT
+cd /home/myuser/staging/UCP-Clarify
 python3 -m venv .venv
 source .venv/bin/activate
 python3 -m pip install --upgrade pip
 python3 -m pip install -e .
-export PYTHONPATH=/home/myuser/staging/UC-ACT/src
+export PYTHONPATH=/home/myuser/staging/UCP-Clarify/src
 ```
 
 Set credentials for the generative model provider. The examples below use
@@ -42,16 +76,16 @@ cd /home/myuser/staging
 git clone https://github.com/dengyang17/PACIFIC
 ```
 
-## Convert PACIFIC Dataset to UC-ACT Format
+## Convert PACIFIC Dataset to UCP-Clarify Format
 
 ```bash
-cd /home/myuser/staging/UC-ACT
+cd /home/myuser/staging/UCP-Clarify
 
-python3 -m uc_act.scripts.convert_pacific \
+python3 -m ucp_clarify.scripts.convert_pacific \
   --path=/home/myuser/staging/PACIFIC/data/pacific/train.json \
   --results_path=/home/myuser/staging/train.jsonl
 
-python3 -m uc_act.scripts.convert_pacific \
+python3 -m ucp_clarify.scripts.convert_pacific \
   --path=/home/myuser/staging/PACIFIC/data/pacific/validation.json \
   --results_path=/home/myuser/staging/validation.jsonl
 ```
@@ -63,8 +97,8 @@ training, use at least 50 training conversations and the full validation set.
 
 ```bash
 cd /home/myuser/staging
-shuf -n 20 train.jsonl > train_20samples.jsonl
-shuf -n 20 validation.jsonl > validation_20samples.jsonl
+shuf -n 50 train.jsonl > train_50samples.jsonl
+shuf -n 50 validation.jsonl > validation_50samples.jsonl
 ```
 
 ## Generate Preference Data
@@ -75,11 +109,11 @@ This step converts conversation JSONL into preference-pair JSONL. It writes
 ```bash
 mkdir -p /home/myuser/staging/output_dir/preference_data
 
-cd /home/myuser/staging/UC-ACT
-python3 -m uc_act.scripts.generate_preference \
+cd /home/myuser/staging/UCP-Clarify
+python3 -m ucp_clarify.scripts.generate_preference \
   --output_dir=/home/myuser/staging/output_dir/preference_data \
-  --train_path=/home/myuser/staging/train_20samples.jsonl \
-  --validation_path=/home/myuser/staging/validation_20samples.jsonl \
+  --train_path=/home/myuser/staging/train_50samples.jsonl \
+  --validation_path=/home/myuser/staging/validation_50samples.jsonl \
   --preference_model_id=$MODEL_API \
   --icl_examples=10
 ```
@@ -89,8 +123,8 @@ python3 -m uc_act.scripts.generate_preference \
 ```bash
 mkdir -p /home/myuser/staging/output_dir/model_output/sft
 
-cd /home/myuser/staging/UC-ACT
-python3 -m uc_act.scripts.run_sft \
+cd /home/myuser/staging/UCP-Clarify
+python3 -m ucp_clarify.scripts.run_sft \
   --output_dir=/home/myuser/staging/output_dir/model_output/sft \
   --train_path=/home/myuser/staging/output_dir/preference_data/train_preference.jsonl \
   --validation_path=/home/myuser/staging/output_dir/preference_data/validation_preference.jsonl \
@@ -106,8 +140,8 @@ For multi-GPU training, use Accelerate:
 
 ```bash
 accelerate launch \
-  --config_file src/uc_act/utils/deepspeed_zero3.yaml \
-  -m uc_act.scripts.run_sft \
+  --config_file src/ucp_clarify/utils/deepspeed_zero3.yaml \
+  -m ucp_clarify.scripts.run_sft \
   --output_dir=/home/myuser/staging/output_dir/model_output/sft \
   --train_path=/home/myuser/staging/output_dir/preference_data/train_preference.jsonl \
   --validation_path=/home/myuser/staging/output_dir/preference_data/validation_preference.jsonl \
@@ -123,8 +157,8 @@ accelerate launch \
 ```bash
 mkdir -p /home/myuser/staging/output_dir/model_output/sft_eval
 
-cd /home/myuser/staging/UC-ACT
-python3 -m uc_act.scripts.evaluate \
+cd /home/myuser/staging/UCP-Clarify
+python3 -m ucp_clarify.scripts.evaluate \
   --eval_data=/home/myuser/staging/output_dir/preference_data/validation_preference.jsonl \
   --policy_model_path=/home/myuser/staging/output_dir/model_output/sft \
   --action_model_id=$MODEL_API \
@@ -142,8 +176,8 @@ refer to that baseline as vanilla DPO.
 ```bash
 mkdir -p /home/myuser/staging/output_dir/model_output/vanilla_dpo
 
-cd /home/myuser/staging/UC-ACT
-python3 -m uc_act.scripts.run_act \
+cd /home/myuser/staging/UCP-Clarify
+python3 -m ucp_clarify.scripts.run_act \
   --output_dir=/home/myuser/staging/output_dir/model_output/vanilla_dpo \
   --train_path=/home/myuser/staging/output_dir/preference_data/train_preference.jsonl \
   --validation_path=/home/myuser/staging/output_dir/preference_data/validation_preference.jsonl \
@@ -163,8 +197,8 @@ python3 -m uc_act.scripts.run_act \
 ```bash
 mkdir -p /home/myuser/staging/output_dir/model_output/vanilla_dpo_eval
 
-cd /home/myuser/staging/UC-ACT
-python3 -m uc_act.scripts.evaluate \
+cd /home/myuser/staging/UCP-Clarify
+python3 -m ucp_clarify.scripts.evaluate \
   --eval_data=/home/myuser/staging/output_dir/preference_data/validation_preference.jsonl \
   --policy_model_path=/home/myuser/staging/output_dir/model_output/vanilla_dpo \
   --action_model_id=$MODEL_API \
@@ -174,16 +208,16 @@ python3 -m uc_act.scripts.evaluate \
   --eval_sample_output_path=/home/myuser/staging/output_dir/model_output/vanilla_dpo_eval/vanilla_dpo_eval_samples.json
 ```
 
-## Run UC-ACT with Dynamic Beta Only
+## Run UCP-Clarify with Dynamic Beta Only
 
 This mode enables the dynamic-beta mechanism and leaves filtering disabled.
 
 ```bash
-mkdir -p /home/myuser/staging/output_dir/model_output/uc_act_dynamic_beta
+mkdir -p /home/myuser/staging/output_dir/model_output/ucp_clarify_dynamic_beta
 
-cd /home/myuser/staging/UC-ACT
-python3 -m uc_act.scripts.run_act \
-  --output_dir=/home/myuser/staging/output_dir/model_output/uc_act_dynamic_beta \
+cd /home/myuser/staging/UCP-Clarify
+python3 -m ucp_clarify.scripts.run_act \
+  --output_dir=/home/myuser/staging/output_dir/model_output/ucp_clarify_dynamic_beta \
   --train_path=/home/myuser/staging/output_dir/preference_data/train_preference.jsonl \
   --validation_path=/home/myuser/staging/output_dir/preference_data/validation_preference.jsonl \
   --policy_model_path=/home/myuser/staging/output_dir/model_output/sft \
@@ -202,33 +236,33 @@ python3 -m uc_act.scripts.run_act \
   --num_train_epochs=4
 ```
 
-## Evaluate UC-ACT with Dynamic Beta Only
+## Evaluate UCP-Clarify with Dynamic Beta Only
 
 ```bash
-mkdir -p /home/myuser/staging/output_dir/model_output/uc_act_dynamic_beta_eval
+mkdir -p /home/myuser/staging/output_dir/model_output/ucp_clarify_dynamic_beta_eval
 
-cd /home/myuser/staging/UC-ACT
-python3 -m uc_act.scripts.evaluate \
+cd /home/myuser/staging/UCP-Clarify
+python3 -m ucp_clarify.scripts.evaluate \
   --eval_data=/home/myuser/staging/output_dir/preference_data/validation_preference.jsonl \
-  --policy_model_path=/home/myuser/staging/output_dir/model_output/uc_act_dynamic_beta \
+  --policy_model_path=/home/myuser/staging/output_dir/model_output/ucp_clarify_dynamic_beta \
   --action_model_id=$MODEL_API \
   --simulator_model_id=$MODEL_API \
   --intent_model_id=$MODEL_API \
-  --eval_result_output_path=/home/myuser/staging/output_dir/model_output/uc_act_dynamic_beta_eval/uc_act_dynamic_beta_eval.json \
-  --eval_sample_output_path=/home/myuser/staging/output_dir/model_output/uc_act_dynamic_beta_eval/uc_act_dynamic_beta_eval_samples.json
+  --eval_result_output_path=/home/myuser/staging/output_dir/model_output/ucp_clarify_dynamic_beta_eval/ucp_clarify_dynamic_beta_eval.json \
+  --eval_sample_output_path=/home/myuser/staging/output_dir/model_output/ucp_clarify_dynamic_beta_eval/ucp_clarify_dynamic_beta_eval_samples.json
 ```
 
-## Run UC-ACT with Filter Only
+## Run UCP-Clarify with Filter Only
 
 This mode keeps a fixed DPO beta and enables soft filtering. The filter
 downweights high-discrepancy outliers; `CLARIFY` samples are protected.
 
 ```bash
-mkdir -p /home/myuser/staging/output_dir/model_output/uc_act_filter
+mkdir -p /home/myuser/staging/output_dir/model_output/ucp_clarify_filter
 
-cd /home/myuser/staging/UC-ACT
-python3 -m uc_act.scripts.run_act \
-  --output_dir=/home/myuser/staging/output_dir/model_output/uc_act_filter \
+cd /home/myuser/staging/UCP-Clarify
+python3 -m ucp_clarify.scripts.run_act \
+  --output_dir=/home/myuser/staging/output_dir/model_output/ucp_clarify_filter \
   --train_path=/home/myuser/staging/output_dir/preference_data/train_preference.jsonl \
   --validation_path=/home/myuser/staging/output_dir/preference_data/validation_preference.jsonl \
   --policy_model_path=/home/myuser/staging/output_dir/model_output/sft \
@@ -244,32 +278,32 @@ python3 -m uc_act.scripts.run_act \
   --num_train_epochs=4
 ```
 
-## Evaluate UC-ACT with Filter Only
+## Evaluate UCP-Clarify with Filter Only
 
 ```bash
-mkdir -p /home/myuser/staging/output_dir/model_output/uc_act_filter_eval
+mkdir -p /home/myuser/staging/output_dir/model_output/ucp_clarify_filter_eval
 
-cd /home/myuser/staging/UC-ACT
-python3 -m uc_act.scripts.evaluate \
+cd /home/myuser/staging/UCP-Clarify
+python3 -m ucp_clarify.scripts.evaluate \
   --eval_data=/home/myuser/staging/output_dir/preference_data/validation_preference.jsonl \
-  --policy_model_path=/home/myuser/staging/output_dir/model_output/uc_act_filter \
+  --policy_model_path=/home/myuser/staging/output_dir/model_output/ucp_clarify_filter \
   --action_model_id=$MODEL_API \
   --simulator_model_id=$MODEL_API \
   --intent_model_id=$MODEL_API \
-  --eval_result_output_path=/home/myuser/staging/output_dir/model_output/uc_act_filter_eval/uc_act_filter_eval.json \
-  --eval_sample_output_path=/home/myuser/staging/output_dir/model_output/uc_act_filter_eval/uc_act_filter_eval_samples.json
+  --eval_result_output_path=/home/myuser/staging/output_dir/model_output/ucp_clarify_filter_eval/ucp_clarify_filter_eval.json \
+  --eval_sample_output_path=/home/myuser/staging/output_dir/model_output/ucp_clarify_filter_eval/ucp_clarify_filter_eval_samples.json
 ```
 
-## Run Complete UC-ACT
+## Run Complete UCP-Clarify
 
 This mode enables both dynamic beta and soft filtering.
 
 ```bash
-mkdir -p /home/myuser/staging/output_dir/model_output/uc_act_full
+mkdir -p /home/myuser/staging/output_dir/model_output/ucp_clarify_full
 
-cd /home/myuser/staging/UC-ACT
-python3 -m uc_act.scripts.run_act \
-  --output_dir=/home/myuser/staging/output_dir/model_output/uc_act_full \
+cd /home/myuser/staging/UCP-Clarify
+python3 -m ucp_clarify.scripts.run_act \
+  --output_dir=/home/myuser/staging/output_dir/model_output/ucp_clarify_full \
   --train_path=/home/myuser/staging/output_dir/preference_data/train_preference.jsonl \
   --validation_path=/home/myuser/staging/output_dir/preference_data/validation_preference.jsonl \
   --policy_model_path=/home/myuser/staging/output_dir/model_output/sft \
@@ -289,20 +323,20 @@ python3 -m uc_act.scripts.run_act \
   --num_train_epochs=4
 ```
 
-## Evaluate Complete UC-ACT
+## Evaluate Complete UCP-Clarify
 
 ```bash
-mkdir -p /home/myuser/staging/output_dir/model_output/uc_act_full_eval
+mkdir -p /home/myuser/staging/output_dir/model_output/ucp_clarify_full_eval
 
-cd /home/myuser/staging/UC-ACT
-python3 -m uc_act.scripts.evaluate \
+cd /home/myuser/staging/UCP-Clarify
+python3 -m ucp_clarify.scripts.evaluate \
   --eval_data=/home/myuser/staging/output_dir/preference_data/validation_preference.jsonl \
-  --policy_model_path=/home/myuser/staging/output_dir/model_output/uc_act_full \
+  --policy_model_path=/home/myuser/staging/output_dir/model_output/ucp_clarify_full \
   --action_model_id=$MODEL_API \
   --simulator_model_id=$MODEL_API \
   --intent_model_id=$MODEL_API \
-  --eval_result_output_path=/home/myuser/staging/output_dir/model_output/uc_act_full_eval/uc_act_full_eval.json \
-  --eval_sample_output_path=/home/myuser/staging/output_dir/model_output/uc_act_full_eval/uc_act_full_eval_samples.json
+  --eval_result_output_path=/home/myuser/staging/output_dir/model_output/ucp_clarify_full_eval/ucp_clarify_full_eval.json \
+  --eval_sample_output_path=/home/myuser/staging/output_dir/model_output/ucp_clarify_full_eval/ucp_clarify_full_eval_samples.json
 ```
 
 ## Optional Evaluation Limit
@@ -310,13 +344,13 @@ python3 -m uc_act.scripts.evaluate \
 Use `--max_eval_samples` for a quick partial evaluation.
 
 ```bash
-python3 -m uc_act.scripts.evaluate \
+python3 -m ucp_clarify.scripts.evaluate \
   --eval_data=/home/myuser/staging/output_dir/preference_data/validation_preference.jsonl \
-  --policy_model_path=/home/myuser/staging/output_dir/model_output/uc_act_full \
+  --policy_model_path=/home/myuser/staging/output_dir/model_output/ucp_clarify_full \
   --action_model_id=$MODEL_API \
   --simulator_model_id=$MODEL_API \
   --intent_model_id=$MODEL_API \
-  --eval_result_output_path=/home/myuser/staging/output_dir/model_output/uc_act_full_eval/uc_act_full_eval_100.json \
-  --eval_sample_output_path=/home/myuser/staging/output_dir/model_output/uc_act_full_eval/uc_act_full_eval_100_samples.json \
+  --eval_result_output_path=/home/myuser/staging/output_dir/model_output/ucp_clarify_full_eval/ucp_clarify_full_eval_100.json \
+  --eval_sample_output_path=/home/myuser/staging/output_dir/model_output/ucp_clarify_full_eval/ucp_clarify_full_eval_100_samples.json \
   --max_eval_samples=100
 ```

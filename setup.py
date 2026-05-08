@@ -1,5 +1,6 @@
 # coding=utf-8
 # Copyright 2025 The Google Research Authors.
+# Modifications Copyright 2025 Songlin Cai.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,9 +28,9 @@ with open("requirements.txt", encoding="utf-8") as requirements_file:
 
 
 setup(
-    name="uc-act",
+    name="UCP-Clarify",
     include_package_data=True,
-    package_data={"uc_act": ["config/*.json", "utils/*.yaml"]},
+    package_data={"ucp_clarify": ["config/*.json", "utils/*.yaml"]},
     packages=find_packages("src", exclude={"tests"}),
     package_dir={"": "src"},
     install_requires=REQUIRED_PKGS,
@@ -39,6 +40,6 @@ setup(
     zip_safe=False,
     version=__version__,
     license="Apache-2.0",
-    description="UC-ACT reference implementation.",
+    description="UCP-Clarify reference implementation.",
     keywords="clarifying questions, dpo, transformers, huggingface, rlhf",
 )
