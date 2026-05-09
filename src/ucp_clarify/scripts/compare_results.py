@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 Songlin Cai.
+# Copyright 2026 Songlin Cai.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,10 +30,10 @@ import pathlib
 
 METHODS = {
     "SFT": "sft_metrics.json",
-    "ACT Original": "act_original_metrics.json",
-    "ACT Dynamic Beta": "act_dynamic_beta_metrics.json",
-    "ACT Beta Filter": "act_beta_filter_metrics.json",
-    "ACT Beta DPO Full": "act_beta_dpo_full_metrics.json",
+    "UCP-Clarify Original": "act_original_metrics.json",
+    "UCP-Clarify Dynamic Beta": "act_dynamic_beta_metrics.json",
+    "UCP-Clarify Beta Filter": "act_beta_filter_metrics.json",
+    "UCP-Clarify Beta DPO Full": "act_beta_dpo_full_metrics.json",
 }
 
 METRICS_ORDER = [

@@ -1,6 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
-# Modifications Copyright 2025 Songlin Cai.
+# Copyright 2026 Songlin Cai.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,9 +22,9 @@ right answer-quality metric:
   doesn't look like Abg-CoQA. This is the default, matching the
   pre-existing behavior so every current PACIFIC run is unchanged.
 * AbgCoqaMetrics  - SentenceBERT cosine similarity, used when the
-  config's data paths point at an Abg-CoQA-style dataset. Matches the
-  original paper (Chen et al.) which uses SBERT for free-form Abg-CoQA
-  answers.
+  config's data paths point at an Abg-CoQA-style dataset. Uses SBERT
+  for free-form Abg-CoQA answers where lexical F1 undercredits valid
+  paraphrases.
 
 The selection is purely a function of the data-path substrings, so no
 config-schema changes are required. A downstream caller may still pass

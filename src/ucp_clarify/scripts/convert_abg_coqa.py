@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 Songlin Cai.
+# Copyright 2026 Songlin Cai.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Convert Abg-CoQA dataset into ACT messages JSONL format.
+"""Convert Abg-CoQA dataset into UCP-Clarify messages JSONL format.
 
 Mirrors convert_pacific.py but handles the Abg-CoQA schema:
   { id, story, target_turn, history_turns, ambiguity, clarification_turn, source }
@@ -106,7 +106,7 @@ def convert_item(item: dict) -> dict | None:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Convert Abg-CoQA to ACT messages format.")
+    parser = argparse.ArgumentParser(description="Convert Abg-CoQA to UCP-Clarify messages format.")
     parser.add_argument("--path", type=str, required=True, help="Path to raw Abg-CoQA JSON.")
     parser.add_argument("--results_path", type=str, required=True, help="Output JSONL path.")
     args = parser.parse_args()

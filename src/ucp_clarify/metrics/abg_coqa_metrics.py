@@ -1,6 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
-# Modifications Copyright 2025 Songlin Cai.
+# Copyright 2026 Songlin Cai.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,10 +15,10 @@
 
 """Abg-CoQA answer-quality metric using SentenceBERT cosine similarity.
 
-The original ACT paper (Chen et al.) evaluates Abg-CoQA with
-SentenceBERT-based semantic similarity (Reimers & Gurevych, 2019; Risch
-et al., 2021) because Abg-CoQA answers are free-form natural-language
-sentences where lexical F1 (DROP F1) undercredits valid paraphrases.
+Abg-CoQA answers are free-form natural-language sentences where lexical
+F1 (DROP F1) undercredits valid paraphrases. This module uses
+SentenceBERT-based semantic similarity (Reimers & Gurevych, 2019) to
+measure answer quality via cosine similarity of sentence embeddings.
 
 `AbgCoqaMetrics` drops in wherever `PacificMetrics` is used:
   * `get_metrics(predicted, gold)` -> `(exact_match_like, similarity)`

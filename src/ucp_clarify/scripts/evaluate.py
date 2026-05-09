@@ -1,6 +1,6 @@
 # coding=utf-8
 # Copyright 2025 The Google Research Authors.
-# Modifications Copyright 2025 Songlin Cai.
+# Modifications Copyright 2026 Songlin Cai.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Used to evaluate an ACT model.
+"""Used to evaluate a UCP-Clarify model.
 
 Eval data should be in a format that HuggingFace `DPOTrainer` can understand
 (not in Vertex AI format).
@@ -53,7 +53,7 @@ absl_flags.DEFINE_integer(
 )
 
 def main(argv):
-  """Main function for evaluating an ACT model."""
+  """Main function for evaluating a UCP-Clarify model."""
   if len(argv) > 1:
     raise app.UsageError("Too many command-line arguments.")
 

@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 Songlin Cai.
+# Copyright 2026 Songlin Cai.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ ACT_EXPERIMENT_MODES = {
     "act_beta_dpo_full",
     "act_instance_beta_ablation",
     # Vanilla preference-optimization baselines handled inline in
-    # ACTTrainer._compute_loss. They reuse ACT rollout + clarify_loss_weight
+    # ACTTrainer._compute_loss. They reuse UCP-Clarify rollout + clarify_loss_weight
     # but swap the pairwise loss for IPO / SimPO / ORPO.
     "act_ipo",
     "act_simpo",
@@ -68,7 +68,7 @@ class BetaDPOModeConfig:
   def validate(self) -> None:
     if self.experiment_mode not in ACT_EXPERIMENT_MODES:
       raise ValueError(
-          f"Unsupported ACT experiment mode '{self.experiment_mode}'. "
+          f"Unsupported UCP-Clarify experiment mode '{self.experiment_mode}'. "
           f"Expected one of {sorted(ACT_EXPERIMENT_MODES)}."
       )
     if not 0.0 <= self.filter_ratio < 1.0:

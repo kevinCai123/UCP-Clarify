@@ -1,6 +1,6 @@
 # coding=utf-8
 # Copyright 2025 The Google Research Authors.
-# Modifications Copyright 2025 Songlin Cai.
+# Modifications Copyright 2026 Songlin Cai.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -211,7 +211,7 @@ def initialize_flags(
       config.training_config.experiment_mode
       if hasattr(config.training_config, 'experiment_mode')
       else 'act_original',
-      'ACT experiment mode. One of: act_original, act_dynamic_beta, '
+      'UCP-Clarify experiment mode. One of: act_original, act_dynamic_beta, '
       'act_beta_filter, act_beta_dpo_full, act_instance_beta_ablation.',
   )
 

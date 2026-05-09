@@ -1,6 +1,6 @@
 # coding=utf-8
 # Copyright 2025 The Google Research Authors.
-# Modifications Copyright 2025 Songlin Cai.
+# Modifications Copyright 2026 Songlin Cai.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ logger = logging.getLogger(__name__)
 initialize_flags(get_default_config())
 
 def main(argv):
-  """Main function for the ACT algorithm."""
+  """Main function for the UCP-Clarify algorithm."""
   if len(argv) > 1:
     raise app.UsageError("Too many command-line arguments.")
 
@@ -126,14 +126,14 @@ def main(argv):
 
 
   #########################
-  # Instantiate ACT trainer
+  # Instantiate UCP-Clarify trainer
   #########################
 
 
   trainer_args = copy.deepcopy(act_config.training_config)
   # Dataset-aware metric (PACIFIC -> DROP F1, Abg-CoQA -> SBERT). See
   # ucp_clarify/metrics/dispatch.py. `conditon_checker` on the selected metric
-  # drives the ACT rollout re-labeling, so the training signal matches
+  # drives the UCP-Clarify rollout re-labeling, so the training signal matches
   # the downstream eval metric on each dataset.
   metrics_obj, quality_score_name = build_metrics(act_config)
   logger.info(

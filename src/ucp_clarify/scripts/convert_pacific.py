@@ -1,6 +1,6 @@
 # coding=utf-8
 # Copyright 2025 The Google Research Authors.
-# Modifications Copyright 2025 Songlin Cai.
+# Modifications Copyright 2026 Songlin Cai.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 """Used to convert the PACIFIC dataset into a format for Vertex AI SFT.
 
 Used to convert the dataset at https://github.com/dengyang17/PACIFIC/ to Gemini
-1.0 Pro format for running SFT and ACT on Vertex AI.
+1.0 Pro format for running SFT and UCP-Clarify on Vertex AI.
 
 Internally, the training code will convert this dataset into a format that
 HuggingFace based `ACTTrainer` can use.

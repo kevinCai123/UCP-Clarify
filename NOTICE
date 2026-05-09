@@ -1,0 +1,20 @@
+UCP-Clarify
+Copyright 2026 Songlin Cai
+
+This project is a derivative work based on "Learning to Clarify" (ACT)
+by The Google Research Authors, available at:
+https://github.com/google-research/google-research/tree/master/learning_to_clarify
+
+The original work is licensed under the Apache License, Version 2.0.
+Files originating from the original ACT codebase retain the copyright
+notice "Copyright 2025 The Google Research Authors" in their headers.
+These files have been modified as part of this project.
+
+New files authored solely for UCP-Clarify (e.g. trainer/beta_dpo.py,
+scripts/compare_results.py, scripts/build_eval_jsonl.py,
+scripts/convert_abg_coqa.py, metrics/abg_coqa_metrics.py,
+metrics/dispatch.py) are Copyright 2026 Songlin Cai and are also
+licensed under the Apache License, Version 2.0.
+
+If you use this code, please cite both the original ACT paper and
+the UCP-Clarify paper. See README.md for citation details.

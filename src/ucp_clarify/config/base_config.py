@@ -1,6 +1,6 @@
 # coding=utf-8
 # Copyright 2025 The Google Research Authors.
-# Modifications Copyright 2025 Songlin Cai.
+# Modifications Copyright 2026 Songlin Cai.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ from ucp_clarify.config.training import training_config
 
 @dataclasses.dataclass
 class BaseConfig:
-  """Base configuration for the ACT Algorithm."""
+  """Base configuration for the UCP-Clarify Algorithm."""
   policy_model_config: hf_model_config.HFModelConfig
   action_model_config: model_config.ModelConfig
   user_simulator_config: model_config.ModelConfig
@@ -35,7 +35,7 @@ class BaseConfig:
 
 @dataclasses.dataclass
 class BaseInitializationConfig:
-  """Base configuration for the SFT Initialization of the ACT Algorithm."""
+  """Base configuration for the SFT Initialization of the UCP-Clarify Algorithm."""
   policy_model_config: hf_model_config.HFModelConfig
   training_config: training_config.ACTInitializationConfig
   preference_model_config: model_config.ModelConfig

@@ -1,6 +1,6 @@
 # coding=utf-8
 # Copyright 2025 The Google Research Authors.
-# Modifications Copyright 2025 Songlin Cai.
+# Modifications Copyright 2026 Songlin Cai.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""ACT trainer built on top of the current TRL DPOTrainer API."""
+"""UCP-Clarify trainer built on top of the current TRL DPOTrainer API."""
 
 from collections import defaultdict
 import logging
@@ -242,7 +242,7 @@ class ACTTrainer(DPOTrainer):
         loss != 'sigmoid' for loss in loss_types
     ):
       raise ValueError(
-          'ACT beta-DPO modes currently support only sigmoid DPO loss.'
+          'UCP-Clarify beta-DPO modes currently support only sigmoid DPO loss.'
       )
 
     stats_device = self.accelerator.device
@@ -276,7 +276,7 @@ class ACTTrainer(DPOTrainer):
         max_completion_length,
         add_special_tokens,
     )
-    # Preserve ACT metadata so the rollout step can update pairs on-policy.
+    # Preserve UCP-Clarify metadata so the rollout step can update pairs on-policy.
     for key in (
         'prompt',
         'chosen',
@@ -438,7 +438,7 @@ class ACTTrainer(DPOTrainer):
 
       logging.info(
           (
-              'ACT rollout | expected_action=%s inferred_action=%s '
+              'UCP-Clarify rollout | expected_action=%s inferred_action=%s '
               'wrong_action=%s trajectory_is_bad=%s\nChosen:\n%s\nRejected:\n%s'
           ),
           expected_action,
@@ -684,7 +684,7 @@ class ACTTrainer(DPOTrainer):
     return weighted_losses.sum() / effective_weight, metrics
 
   def _compute_loss(self, model, inputs, return_outputs):
-    """Override TRL 1.0.0's _compute_loss to inject ACT custom DPO logic."""
+    """Override TRL 1.0.0's _compute_loss to inject UCP-Clarify custom DPO logic."""
     mode = 'train' if self.model.training else 'eval'
     device = self.accelerator.device
 
@@ -757,7 +757,7 @@ class ACTTrainer(DPOTrainer):
     if self.mode_config.experiment_mode in (
         'act_ipo', 'act_simpo', 'act_orpo'
     ):
-      # Vanilla preference-optimization baselines reusing ACT rollout and
+      # Vanilla preference-optimization baselines reusing UCP-Clarify rollout and
       # clarify_loss_weight but swapping the pairwise loss.  Each branch is
       # self-contained and references only tensors already computed above.
       chosen_mask_p, rejected_mask_p = shift_completion_mask.chunk(2, dim=0)
