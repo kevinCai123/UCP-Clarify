@@ -5,40 +5,6 @@ Reference implementation for UCP-Clarify. The Python package is named
 
 This is research code and is not an officially supported product.
 
-## Acknowledgement
-
-This project builds upon **Learning to Clarify (ACT)** by The Google Research
-Authors. The original codebase is available at:
-<https://github.com/google-research/google-research/tree/master/learning_to_clarify>
-
-Our modifications introduce dynamic-beta DPO scheduling, soft preference
-filtering, and evaluation across different dpo variances on top of the original
-ACT framework.
-
-## Citation
-
-If you use this code, please cite both works:
-
-```bibtex
-@inproceedings{
-chen2025learning,
-title={Learning to Clarify: Multi-turn Conversations with Action-Based Contrastive Self-Training},
-author={Maximillian Chen and Ruoxi Sun and Tomas Pfister and Sercan O Arik},
-booktitle={The Thirteenth International Conference on Learning Representations},
-year={2025},
-url={https://openreview.net/forum?id=SIE6VFps9x}
-}
-```
-
-The UCP-Clarify paper is currently **under review**. Citation details will be
-added upon publication.
-
-## License
-
-This project is licensed under the [Apache License 2.0](LICENSE).
-Files originating from the original ACT codebase retain the copyright notice
-of The Google Research Authors. See [NOTICE](NOTICE) for details.
-
 ## Setup Environment
 
 Assume this repository is under `/home/myuser/staging/UCP-Clarify`.
@@ -354,3 +320,37 @@ python3 -m ucp_clarify.scripts.evaluate \
   --eval_sample_output_path=/home/myuser/staging/output_dir/model_output/ucp_clarify_full_eval/ucp_clarify_full_eval_100_samples.json \
   --max_eval_samples=100
 ```
+
+## Acknowledgement
+
+This project builds upon **Learning to Clarify (ACT)** by The Google Research
+Authors. The original codebase is available at:
+<https://github.com/google-research/google-research/tree/master/learning_to_clarify>
+
+Our modifications introduce dynamic-beta DPO scheduling, soft preference
+filtering, and evaluation across different dpo variances on top of the original
+ACT framework.
+
+## Citation
+
+If you use this code, please cite both works:
+
+```bibtex
+@inproceedings{
+chen2025learning,
+title={Learning to Clarify: Multi-turn Conversations with Action-Based Contrastive Self-Training},
+author={Maximillian Chen and Ruoxi Sun and Tomas Pfister and Sercan O Arik},
+booktitle={The Thirteenth International Conference on Learning Representations},
+year={2025},
+url={https://openreview.net/forum?id=SIE6VFps9x}
+}
+```
+
+The UCP-Clarify paper is currently **under review**. Citation details will be
+added upon publication.
+
+## License
+
+This project is licensed under the [Apache License 2.0](LICENSE).
+Files originating from the original ACT codebase retain the copyright notice
+of The Google Research Authors. See [NOTICE](NOTICE) for details.
