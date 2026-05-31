@@ -349,6 +349,10 @@ url={https://openreview.net/forum?id=SIE6VFps9x}
 The UCP-Clarify paper is currently **under review**. Citation details will be
 added upon publication.
 
+## Hardware Requirements
+
+We recommend at least an **NVIDIA RTX PRO 6000** or **NVIDIA H100** for training and running UCP-Clarify.
+
 ## License
 
 This project is licensed under the [Apache License 2.0](LICENSE).
